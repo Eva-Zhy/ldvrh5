@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="stylesheet" type="text/css" href="css/map.css?v=156"/>
+    <title>体验馆位置</title>
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/wxShare.js?v=123"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=ZNZBZ-PITCO-JEYWW-SCNTT-MIXK7-EHF5A"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&libraries=geometry"></script>
+</head>
+
+<body>
+<iframe id="geoPage" style="display: none;" width="0" height="0" frameborder=0 scrolling="no"
+        src="https://apis.map.qq.com/tools/geolocation?key=ZNZBZ-PITCO-JEYWW-SCNTT-MIXK7-EHF5A&referer=myapp&effect=zoom"></iframe>
+<script type="text/JavaScript">
+    var loc;
+    window.longitude = 120.176408;
+    window.latitude = 35.956812;
+    var my_map;
+    var my_position = '';
+    var first = 1;
+    var user_agreed = false;
+    //监听定位组件的message事件
+
+    window.addEventListener('message', function (event) {
+        loc = event.data; // 接收位置信息
+        user_agreed = true;
+//        alert(JSON.stringify(loc));
+        if (loc && loc.module == 'geolocation' && first) { //定位成功,防止其他应用也会向该页面post信息，需判断module是否为'geolocation'
+            //给位置展示组件赋值
+            first = 0;
+            latitude = loc.lat;
+            longitude = loc.lng;
+            my_position = latitude + ',' + longitude;
+//            alert(my_position);
+            getNearby();
+//            document.getElementById('markPage').src = markUrl;
+        } else { //定位组件在定位失败后，也会触发message, event.data为null
+//            alert('定位失败');
+            if (first) {
+                first = 0;
+                getMarker();
+//                getNearby();
+            }
+        }
+    }, false);
+
+    setTimeout(function () {
+        if (user_agreed) {
+
+        } else {
+            getMarker();
+        }
+    }, 2500);
+
+</script>
+
+
+<!--   定义地图显示容器   -->
+<div id="container"></div>
+<div id="venues">
+    <div class="venues-title">
+    </div>
+    <div class="venues-kong">
+    </div>
+    <div class="list-div">
+        <!--<div class="venues-info">-->
+        <!--<div class="venues-img">-->
+        <!--<img class="my-venues-img" src="images/baise.jpg" style="width: 100%; height: 100%;"/>-->
+        <!--</div>-->
+        <!--<div class="venues-address">-->
+        <!--<div class="address1">-->
+        <!--</div>-->
+        <!--<div class="address2">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="venues-img2">-->
+        <!--<a class="daohang" href="#">-->
+        <!--<img src="images/daohang.png" style="width: 100%; height: 100%;"/>-->
+        <!--</a>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<div id="venues2">
+    <div style="border: 0;" class="venues-info">
+        <div id="address1">aaa
+        </div>
+        <div class="venues2-img">
+            <img class="my-venues-img2" src="https://ludianvr.com/ldvr/images/community/placehold.png"
+                 style="width: 100%; height: 100%;"/>
+        </div>
+        <div class="venues2-address">
+            <div id="address2" class="address3">aaa
+            </div>
+            <div class="black-img">
+                <img src="images/black.png" style="width: 100%; height: 100%;"/>
+            </div>
+        </div>
+
+        <div class="venues-img3">
+            <a id="dan-daohang" class="daohang" href="#">
+                <img src="images/dohang_dj.png" style="width: 100%; height: 100%;"/>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var map_markers = [];
+    var my_markers = [];
+    var de_zoom = 1;
+    var select_num = 0;
+    var anchor = new qq.maps.Point(10, 30),
+        size = new qq.maps.Size(22, 29),
+        origin = new qq.maps.Point(0, 0),
+        markerIcon = new qq.maps.MarkerImage(
+            "https://www.ludianvr.com/ldvr/h5/ldvr/images/dibiao.png",
+            size,
+            origin,
+            anchor
+        );
+    var anchor2 = new qq.maps.Point(42, 58),
+        size2 = new qq.maps.Size(85, 85),
+        origin2 = new qq.maps.Point(0, 0),
+        markerIcon2 = new qq.maps.MarkerImage(
+            "https://ludianvr.com/ldvr/h5/ldvr/images/sel-db.png",
+            size2,
+            origin2,
+            anchor2
+        );
+    var wode = new qq.maps.Point(10, 30),
+        size3 = new qq.maps.Size(22, 29),
+        origin3 = new qq.maps.Point(0, 0),
+        markerIcon3 = new qq.maps.MarkerImage(
+            "https://www.ludianvr.com/ldvr/h5/ldvr/images/wode.png",
+            size3,
+            origin3,
+            wode
+        );
+
+    $(document).ready(function () {
+
+    });
+
+    function getMarker() {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/experience/position",//路径
+            data: {},//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 40001) {
+                    map_markers = res.content;
+                    var center = new qq.maps.LatLng(30.256812, 120.176408);
+
+                    var map = new qq.maps.Map(document.getElementById('container'), {
+                        center: center,
+                        zoom: 12,
+                        zoomControl: false
+                    });
+//                    var info = new qq.maps.InfoWindow({
+//                        map: map
+//                    });
+                    addMarkers(map, map_markers);
+                    // 0 -> 未授权 1->授权
+                    addList(map, 0, map_markers);
+
+                    $(".black-img").click(function () {
+                        $('#venues2').css('display', 'none');
+                        $('#venues').css('display', 'block');
+//                        map.panTo(new qq.maps.LatLng(latitude, longitude));
+//                        map.zoomTo(de_zoom);
+                    });
+                }
+            }
+        });
+    }
+
+    function getNearby() {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/experience/nearby",//路径
+            data: {
+                longitude: longitude,
+                latitude: latitude
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 41001) {
+                    map_markers = res.content;
+                    var center = new qq.maps.LatLng(latitude, longitude);
+                    var map = new qq.maps.Map(document.getElementById('container'), {
+                        center: center,
+                        zoom: 18,
+                        zoomControl: false
+                    });
+                    var center2 = new qq.maps.LatLng(30.256812, 120.176408);
+                    de_zoom = getZoom(center, center2);
+                    map.zoomTo(getZoom(center, center2));
+                    addMarkers(map, map_markers);
+                    // 0 -> 未授权 1->授权
+                    addList(map, 1, map_markers);
+                    var mylatitude = latitude;
+                    var mylongitude = longitude;
+                    var myposition = [];
+                    myposition.push({
+                        coordinate: [mylongitude, mylatitude]
+                    });
+                    addMyPosition(map, myposition);
+                    $(".black-img").click(function () {
+                        $('#venues2').css('display', 'none');
+                        $('#venues').css('display', 'block');
+                        map.panTo(new qq.maps.LatLng(latitude, longitude));
+                        map.zoomTo(de_zoom);
+                    });
+                }
+            }
+        });
+    }
+
+    function getZoom(pointA, pointB) {
+        var distance = Math.round(qq.maps.geometry.spherical.computeDistanceBetween(pointA, pointB) * 10) / 10;
+        console.log('distance', distance);
+        if (distance >= 0 && distance <= 5000) {
+            return 12;
+        } else if (distance >= 5001 && distance <= 50000) {
+            return 10;
+        } else if (distance >= 50001 && distance <= 1000000) {
+            return 4;
+        } else if (distance >= 1000001 && distance <= 2000000) {
+            return 3;
+        } else {
+            return 1;
+        }
+    }
+
+    function addMyPosition(map, map_markers) {
+        for (var i = 0; i < map_markers.length; i++) {
+            console.log(map_markers[i].coordinate[1]);
+            console.log(map_markers[i].coordinate[0]);
+            var marker = new qq.maps.Marker({
+                position: new qq.maps.LatLng(map_markers[i].coordinate[1], map_markers[i].coordinate[0]),
+                map: map
+            });
+            marker.setIcon(markerIcon3);
+        }
+    }
+
+    function addList(map, type, map_markers) {
+        var html_str = "";
+        $('#venues').css('display', 'block');
+        if (type == 0) {
+            $('.venues-title').html('所有体验馆');
+            $('.list-div').html('');
+            for (var i = 0; i < map_markers.length; i++) {
+                html_str += '<div class="venues-info">'
+                    + '<div id="marker' + i + '">'
+                    + '<div class="venues-img">'
+                    + '<img class="my-venues-img" src="' + map_markers[i].image + '" style="width: 100%; height: 100%;"/>'
+                    + '</div>'
+                    + '<div class="venues-address">'
+                    + '<div class="address1">' + map_markers[i].name + ''
+                    + '</div>'
+                    + '<div class="address2">' + map_markers[i].address + ''
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="venues-img2">'
+                    + '<a class="daohang" href="' + "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=''&to=" + map_markers[i].name + "&tocoord=" + map_markers[i].coordinate[1] + ',' + map_markers[i].coordinate[0] + "&policy=1&referer=myapp" + '">'
+                    + '<img src="images/daohang.png" style="width: 100%; height: 100%;"/>'
+                    + '</a>'
+                    + '</div>'
+                    + '</div>'
+            }
+            $('.list-div').append(html_str);
+            for (var o = 0; o < map_markers.length; o++) {
+                (function (o) {
+                    $('#marker' + o).click(function () {
+                        map.panTo(new qq.maps.LatLng(map_markers[o].coordinate[1], map_markers[o].coordinate[0]));
+                        map.zoomTo(12);
+                        my_markers[select_num].marker.setIcon(markerIcon);
+                        select_num = o;
+                        my_markers[o].marker.setIcon(markerIcon2);
+                        $('#venues').css('display', 'none');
+                        $('#venues2').css('display', 'block');
+                        $('#address1').html(my_markers[o].name);
+                        $('#address2').html(my_markers[o].address);
+                        $('.my-venues-img2').attr('src', my_markers[o].image);
+                        $('#dan-daohang').attr('href', "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + my_position + "&to=" + my_markers[o].name + "&tocoord=" + my_markers[o].tocoord + "&policy=1&referer=myapp");
+                    });
+                })(o);
+            }
+        } else if (type == 1) {
+            $('.venues-title').html('离我最近的体验馆');
+            $('.list-div').html('');
+            console.log('map_markers', map_markers);
+            for (var i = 0; i < map_markers.length; i++) {
+                html_str += '<div class="venues-info">'
+                    + '<div id="marker' + i + '">'
+                    + '<div class="venues-img">'
+                    + '<img class="my-venues-img" src="' + map_markers[i].image + '" style="width: 100%; height: 100%;"/>'
+                    + '</div>'
+                    + '<div class="venues-address">'
+                    + '<div class="address1">' + map_markers[i].name + ''
+                    + '</div>'
+                    + '<div class="address2">' + '<span class="distance">' + map_markers[i].distance + '</span>|' + map_markers[i].address + ''
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="venues-img2">'
+                    + '<a class="daohang" href="' + "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + my_position + "&to=" + map_markers[i].name + "&tocoord=" + map_markers[i].coordinate[1] + ',' + map_markers[i].coordinate[0] + "&policy=1&referer=myapp" + '">'
+                    + '<img src="images/daohang.png" style="width: 100%; height: 100%;"/>'
+                    + '</a>'
+                    + '</div>'
+                    + '</div>'
+            }
+            $('.list-div').append(html_str);
+
+            for (var o = 0; o < map_markers.length; o++) {
+                (function (o) {
+                    $('#marker' + o).click(function () {
+                        map.panTo(new qq.maps.LatLng(map_markers[o].coordinate[1], map_markers[o].coordinate[0]));
+                        map.zoomTo(12);
+                        my_markers[select_num].marker.setIcon(markerIcon);
+                        select_num = o;
+                        my_markers[o].marker.setIcon(markerIcon2);
+                        $('#venues').css('display', 'none');
+                        $('#venues2').css('display', 'block');
+                        $('#address1').html(my_markers[o].name);
+                        $('#address2').html(my_markers[o].address);
+                        $('.my-venues-img2').attr('src', my_markers[o].image);
+                        $('#dan-daohang').attr('href', "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + my_position + "&to=" + my_markers[o].name + "&tocoord=" + my_markers[o].tocoord + "&policy=1&referer=myapp");
+                    });
+                })(o);
+            }
+        }
+    }
+
+
+    function addMarkers(map, map_markers) {
+        my_markers = [];
+        for (var i = 0; i < map_markers.length; i++) {
+            console.log(map_markers[i].coordinate[1]);
+            var marker = new qq.maps.Marker({
+                position: new qq.maps.LatLng(map_markers[i].coordinate[1], map_markers[i].coordinate[0]),
+                map: map
+            });
+//            if (i == 0) {
+//                marker.setIcon(markerIcon2);
+//                $('.address1').html(map_markers[i].name);
+//                $('.address2').html(map_markers[i].address);
+//                $('#venues-img').attr('src', map_markers[i].image);
+//                $('#daohang').attr('href', "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + my_position + "&to=" + map_markers[i].name + "&tocoord=" + map_markers[i].tocoord + "&policy=1&referer=myapp");
+//            } else {
+            marker.setIcon(markerIcon);
+//            }
+            //添加到提示窗
+            //获取标记的点击事件
+            var markers_obj = {};
+            markers_obj.marker = marker;
+            markers_obj.address = map_markers[i].address;
+            markers_obj.name = map_markers[i].name;
+            markers_obj.image = map_markers[i].image;
+            markers_obj.tocoord = map_markers[i].coordinate[1] + ',' + map_markers[i].coordinate[0];
+            markers_obj.lat = map_markers[i].coordinate[1];
+            markers_obj.long = map_markers[i].coordinate[0];
+            my_markers.push(markers_obj);
+
+        }
+        console.log(my_markers);
+        for (var o = 0; o < my_markers.length; o++) {
+            qq.maps.event.addListener(my_markers[o].marker, "click", (function (o) {
+                return function () {
+                    $('#venues').css('display', 'none');
+                    $('#venues2').css('display', 'block');
+                    console.log(my_markers[o]);
+                    my_markers[select_num].marker.setIcon(markerIcon);
+                    select_num = o;
+                    my_markers[o].marker.setIcon(markerIcon2);
+                    $('#address1').html(my_markers[o].name);
+                    $('#address2').html(my_markers[o].address);
+                    $('.my-venues-img2').attr('src', my_markers[o].image);
+                    $('#dan-daohang').attr('href', "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + my_position + "&to=" + my_markers[o].name + "&tocoord=" + my_markers[o].tocoord + "&policy=1&referer=myapp");
+
+                    map.panTo(new qq.maps.LatLng(my_markers[o].lat, my_markers[o].long));
+                    map.zoomTo(12);
+                }
+            })(o));
+        }
+    }
+</script>
+</body>
+</html>

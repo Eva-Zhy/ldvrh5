@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=223"/>
+    <title>露电VR</title>
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/wxShare.js"></script>
+    <!--<script src="https://www.jwnice.com/jywx/wxshare/wxShare.js?v=123"></script>-->
+</head>
+<body>
+<div class="share-div">
+    <img class="VR_invite" src="images/VR_invite.png">
+    <div class="cs-view2">
+        <!--<p>您的好友XXX，于xxxx年x月x日以xx分的成绩通过消防队科普知识考评。</p>-->
+    </div>
+    <div class="yaoqing">特邀请您邀一起体验<span style="color: #da4038">VR消防系统</span></div>
+    <div class="yaoqing3">扫描右侧二维码</div>
+    <div class="yaoqing4">关注我们，更多惊喜等着你哦！</div>
+    <img class="ewm-img" src="images/ewm.jpg">
+</div>
+<div class="yaoqing2">长按保存图片</div>
+<div class="chang-btn2">
+    开始体验
+</div>
+<img src="" class="share-img"/>
+<script>
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    Request = GetRequest();
+    var openid = Request['openid'];
+
+
+    function share_ajax(myopenid) {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/user/share",//路径
+            data: {
+                "openid": myopenid
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 10000) {
+                    var name = res.content.name;
+                    var time = res.content.time_stamp;
+                    var time_arr1 = time.split(" ");
+                    var time_data = time_arr1[0];
+                    var time_arr12 = time_data.split("-");
+                    var year = parseInt(time_arr12[0]);
+                    var month = parseInt(time_arr12[1]);
+                    var day = parseInt(time_arr12[2]);
+
+                    var score = res.content.score;
+
+                    console.log(name);
+                    console.log(year);
+                    console.log(month);
+                    console.log(day);
+                    console.log(score);
+
+                    if (score == undefined) {
+                        var time_spend = res.content.time_spend;
+                        var time_spend_arr = time_spend.split(":");
+                        var h = parseInt(time_spend_arr[0]);
+                        var m = parseInt(time_spend_arr[1]);
+                        var s = parseInt(time_spend_arr[2]);
+                        if (h != 0) {
+                            var html_test = "<p>您的好友" + name + "，于" + year + "年" + month + "月" + day + "日以" + h + "小时" + m + "分" + s + "秒的成绩通过消防队科普知识考评。</p>";
+                        } else {
+                            var html_test = "<p>您的好友" + name + "，于" + year + "年" + month + "月" + day + "日以" + m + "分" + s + "秒的成绩通过消防队科普知识考评。</p>";
+                        }
+                    } else {
+                        var html_test = "<p>您的好友" + name + "，于" + year + "年" + month + "月" + day + "日以" + score + "分的成绩通过消防队科普知识考评。</p>";
+                    }
+                    $('.cs-view2').append(html_test);
+
+                    html2canvas(document.querySelector(".share-div")).then(function (canvas) {
+//            document.querySelector(".share-img").appendChild(canvas);
+                        document.querySelector(".share-img").src = canvas.toDataURL("image/png");
+                    });
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $(".chang-btn2").click(function () {
+//            alert(123);
+            window.location.href = "weixin.html";
+        });
+        share_ajax(openid);
+    });
+
+    window.shareManage.init({
+        title: "露电VR消防安全教育体验邀请函",
+        desc: "您的好友邀请您一起借助VR技术学习防火知识、灭火方式、逃生方法。体验一次  平安一生！",
+        imgUrl: 'https://www.ludianvr.com/ldvr/h5/ldvr/images/share_img.png',
+        link: 'https://www.ludianvr.com/ldvr/h5/ldvr/share.html?openid=' + openid
+    });
+</script>
+<script>
+    var _mtac = {};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500610562");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+</body>
+</html>

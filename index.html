@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=75"/>
+    <title>露电VR</title>
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/config.js?v=123"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/wxUser.js?v=123"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/util.js?v=123"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/wxShare.js?v=123"></script>
+    <!--<script src="http://www.jwnice.com/jywx/wxshare/wxShare.js?v=123"></script>-->
+    <script>
+        var openid = "";
+        var wechat_nickname = '';
+        var wechat_sex = '';
+        var wechat_province = '';
+        var wechat_city = '';
+        var wechat_country = '';
+        var wechat_headimgurl = '';
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+        Request = GetRequest();
+        var isyouke = Request['isyouke'];
+
+        function newUser() {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/test/user/login",//路径
+                data: {
+                    "openid": openid
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    if (res.status.state == 10001) {
+                        $('.regist-div').css('display', 'block');
+                        $('.youke_bg').css('display', 'block');
+                        $('.youke_div').css('display', 'block');
+                    } else if (res.status.state == 10002) {
+                        window.location.href = "erweima.html?type=1&openid=" + openid;
+                    } else if (res.status.state == 10003) {
+                        window.location.href = "erweima.html?type=2&time=" + res.content.timeleft + "&authcode=" + res.content.authcode + "&openid=" + openid;
+                    }
+                }
+            });
+        }
+
+        window.gg.wxUser.getUserInfo(function (res) {
+            console.log(res);
+            openid = res.openid;
+            wechat_nickname = res.nickname;
+            wechat_sex = res.sex;
+            wechat_province = res.province;
+            wechat_city = res.city;
+            wechat_country = res.country;
+            wechat_headimgurl = res.headimgurl;
+//            if (isyouke != 1) {
+                newUser();
+//            } else {
+//                $('.regist-div').css('display', 'block');
+//                $('.youke_bg').css('display', 'block');
+//                $('.youke_div').css('display', 'block');
+//            }
+        });
+    </script>
+    <script>
+        var countdown = 60;
+        var getYzm = true;
+        function getSms(phonenumber) {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/user/querysms",//路径
+                data: {
+                    "openid": openid,
+                    "phonenumber": phonenumber
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                }
+            });
+        }
+
+        function settime(val) {
+            if ($('#mobile').val() == "") {
+                $("#shurushouji").css('display', 'block');
+                $("#shoujigeshi").css('display', 'none');
+                return 0;
+            } else {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'none');
+            }
+            if (!isPoneAvailable($('#mobile').val())) {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'block');
+                return 0;
+            } else {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'none');
+            }
+
+            if (getYzm) {
+                getYzm = false;
+                getSms($('#mobile').val());
+            }
+
+            if (countdown == 0) {
+                val.removeAttribute("disabled");
+                val.value = "获取验证码";
+                countdown = 60;
+                getYzm = true;
+                return 0;
+            } else {
+                val.setAttribute("disabled", true);
+                val.value = "重新发送(" + countdown + ")";
+                countdown--;
+            }
+            setTimeout(function () {
+                settime(val)
+            }, 1000)
+        }
+    </script>
+</head>
+<body>
+<!--<div class="gr-view">-->
+<!--个人消息-->
+<!--</div>-->
+<!--<div class="xm-view" style="margin-top: 5rem">-->
+<!--姓名-->
+<!--</div>-->
+<div class="cns_bg">
+
+</div>
+<div class="cns">
+    <div class="cns-text">
+        <!--<p style="text-align: center;">-->
+        <!--<span style="font-size: 24px;">安全承诺书</span>-->
+        <!--</p>-->
+        <!--<p style="text-align: left; text-indent: 2em;">-->
+        <!--<br/>-->
+        <!--</p>-->
+        <!--<p style="text-align: left; text-indent: 2em;">-->
+        <!--<span style="font-size: 16px;">一、禁止心脏病、有癫痫病史的人员进行VR安全体验。患有高血压、恐高症以及其他不适合刺激性体验的人员应避免长时间持续使用本产品。体验人员不得隐瞒身体状况，否则后果自负。</span>-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--<br/>-->
+        <!--</p>-->
+        <!--<p style="text-indent: 2em;">-->
+        <!--<span style="font-size: 16px;">二、由于VR体验设备属于电子产品，容易摔坏，禁止任何人恶意损坏VR体验馆馆内的各类设备设施，违规者按照受损设备设施原价进行赔偿。</span>-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--<br/>-->
+        <!--</p>-->
+        <!--<p style="text-align: left; text-indent: 2em;">-->
+        <!--<span style="font-size: 16px;">三、体验人员进入体验馆后禁止吸烟，不得随意乱丢垃圾。手机等通讯设备请调成震动或者静音，不得大声喧哗。请相关人员做好每次VR安全体验培训组织和记录工作。体验活动结束后请切断电源、锁好门窗。</span>-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--<br/>-->
+        <!--</p>-->
+    </div>
+    <div class="cns-btn">
+        我已经阅读并同意
+    </div>
+</div>
+<div class="select_bg">
+
+</div>
+
+<div class="youke_bg">
+
+</div>
+
+<div class="youke_div">
+    <div class="youke_title">
+        <div class="youke_title_n">
+            请选择体验方式
+        </div>
+        <img class="close_1" src="images/close_1.png">
+    </div>
+    <div class="new_user_btn">
+        新用户注册
+    </div>
+    <div class="kuai_btn">
+        快速体验
+    </div>
+</div>
+
+<div class="wx_ts_div">
+    <div class="wx_ts_title">
+        温馨提示
+    </div>
+    <div class="wx_ts_font">
+        注册用户才能体验所有场景，是否立即解锁全部场景
+    </div>
+    <div class="jj-btn">
+        残忍拒绝
+    </div>
+    <div class="zz-btn">
+        马上注册
+    </div>
+</div>
+
+<div class="regist-div">
+    <div class="select_div">
+        <div class="xzdd">
+            <div id="close_xcdd">
+                <img style="width: 100%;height: 100%;" src="images/cha.png">
+            </div>
+            <div class="xzdd-title">
+                选择地点
+            </div>
+            <div id="sure_xcdd">
+                <img style="width: 100%;height: 100%;" src="images/gou.png">
+            </div>
+        </div>
+        <div class="xz-address">
+            <div class="slet-div">
+                <select id="sheng" class="select_item" style="-webkit-appearance: none;">
+                    <option value="省" selected="selected">省</option>
+                </select>
+            </div>
+            <div class="slet-div" id="shi_div">
+                <select id="shi" class="select_item" style="-webkit-appearance: none;">
+                    <option value="市" selected="selected">市</option>
+                </select>
+            </div>
+            <div class="slet-div">
+                <select id="qu" class="select_item" style="-webkit-appearance: none;">
+                    <option value="区" selected="selected">区</option>
+                </select>
+            </div>
+            <div class="slet-div">
+                <select id="jie" class="select_item" style="-webkit-appearance: none;">
+                    <option value="街道" selected="selected">街道</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="ixm-view">
+        <!--<span style="float: left;">姓名</span> <input id="name" class="name" type="text" name="name"-->
+        <!--style="margin-left: 3rem; width: 25rem"/>-->
+        <input id="name" class="name" type="text" name="name" placeholder="姓名"
+               style="width: 25rem"/>
+    </div>
+
+    <div id="name_ts" class="tishi" style="top: 6.9rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">请输入名字</span>
+    </div>
+
+    <div class="xb-view">
+        <div class="xb-div" id="nan" style="border: 1px solid #d73c37; color: #d73c37;">先生</div>
+        <div class="xb-div" id="nv" style="margin-left: 2rem;">女士</div>
+    </div>
+
+    <div class="isr-view">
+        <!--<span style="float: left;">生日(选填)</span> <input id="date" class="name" type="date" name="birthday"-->
+        <!--style="float: left; margin-left: 1rem; margin-top: 1px; width: 18rem"/>-->
+        <input id="date" class="name" type="date" name="birthday" placeholder="生日(选填)"
+               style="width: 34rem; font: 400 16px Arial; color: #6c6c6c; background-color: #fff;"/>
+    </div>
+
+    <div id="shurushouji" class="tishi" style="top: 18.0rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">请输入手机号</span>
+    </div>
+    <div id="shoujigeshi" class="tishi" style="top: 18.0rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">手机号格式错误</span>
+    </div>
+
+    <div class="idh-view">
+        <!--<span style="float: left;">手机号</span> <input id="mobile" class="name" type="text" name="mobile"-->
+        <!--style="margin-left: 1.6rem; width: 25rem"/>-->
+        <input id="mobile" class="name" type="text" name="mobile" placeholder="手机号"
+               style="width: 25rem"/>
+    </div>
+
+    <div class="yzm-view">
+        <!--<span style="float: left;">验证码</span> <input id="yzm" class="name" type="text" name="mobile"-->
+        <!--style="margin-left: 1.6rem; width: 10rem"/>-->
+        <input id="yzm" class="name" type="text" name="mobile" placeholder="验证码"
+               style="width: 10rem"/>
+    </div>
+    <input class="yzm-btn" id="yzm_btn" type="button" value="获取验证码" onclick="settime(this)"/>
+
+    <div id="yzm_cw" class="tishi" style="top: 23.9rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">验证码错误</span>
+    </div>
+
+    <div id="yzm_sr" class="tishi" style="top: 23.9rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">输入验证码</span>
+    </div>
+
+    <div class="iyx-view">
+        <!--<span style="float: left;">邮箱(选填)</span> <input id="mail" class="name" type="text" name="mail" placeholder=""-->
+        <!--style="width: 23rem; float:left; margin-left: 0.5rem;"/>-->
+        <input id="mail" class="name" type="text" name="mail" placeholder="邮箱(选填)"
+               style="width: 25rem;"/>
+    </div>
+    <div id="yx_cw" class="tishi" style="top: 36.9rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">邮箱错误</span>
+    </div>
+
+    <div class="ijt-view">
+        <!--<span style="float: left;">家庭住址(选填)</span>-->
+        <!--<div id="address" class="name"-->
+        <!--style="width: 20rem; float: left; color: #000;  margin-left:0.5rem;line-height: 2.2rem; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">-->
+        <!--</div>-->
+        <!--<div id="address" class="name"-->
+        <!--style="width: 34rem; float: left; color: #6c6c6c;  font: 400 16px Arial; line-height: 2.2rem; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">-->
+        <!--家庭住址(选填)-->
+        <!--</div>-->
+        <input id="address" class="name" type="text" name="address" placeholder="家庭住址(选填)"
+               style="width: 34rem;" readonly="readonly"/>
+    </div>
+
+    <div id="zz_cw" class="tishi" style="top: 43.7rem; left: 2.5rem;">
+        <img class="err_img" src="images/error.png"> <span class="tishi_text">住址格式错误</span>
+    </div>
+    <div class="ty-view">
+        <input id="read" style="float: left;" type="checkbox" name="vehicle" value="Car"/>
+        <div style="float: left;margin-top: 0.1rem;"><span id="yuede">已阅读并同意</span><span id="anquan"
+                                                                                         style="color: #798aad">《VR产品使用安全承诺书》</span>
+        </div>
+    </div>
+    <div class="btn" style="text-align: center;">
+        注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册
+    </div>
+</div>
+<!--<div class="select-view">-->
+<!--<div class="select-bg">-->
+
+<!--</div>-->
+<!--<div class="select-div">-->
+
+<!--</div>-->
+<!--</div>-->
+<script>
+    var sex = 1;
+    var sheng = "";
+    var shi = "";
+    var qu = "";
+    var jie = "";
+    var address = "";
+    var cns_type = 0;
+
+    var zhixian = true;
+    $(document).ready(function () {
+        $(".new_user_btn").click(function () {
+            $('.youke_div').css('display', 'none');
+            $('.youke_bg').css('display', 'none');
+        });
+        $(".kuai_btn").click(function () {
+            $('.youke_div').css('display', 'none');
+            $('.wx_ts_div').css('display', 'block');
+        });
+        $(".close_1").click(function () {
+            $('.youke_div').css('display', 'none');
+            $('.youke_bg').css('display', 'none');
+        });
+
+        $(".zz-btn").click(function () {
+            $('.wx_ts_div').css('display', 'none');
+            $('.youke_bg').css('display', 'none');
+        });
+
+        $(".jj-btn").click(function () {
+            cns_type = 1;
+            $('.wx_ts_div').css('display', 'none');
+            $('.youke_bg').css('display', 'none');
+            $('.cns_bg').css('display', 'block');
+            $('.cns').css('display', 'block');
+        });
+
+
+        $("#date").on("input", function () {
+            if ($(this).val().length > 0) {
+                $(this).addClass("full");
+            }
+            else {
+                $(this).removeClass("full");
+            }
+        });
+
+        $("#yuede").click(function () {
+            $("#read").prop("checked", true)
+        });
+
+        $("#anquan").click(function () {
+            $('.cns').css('display', 'block');
+            $('.cns_bg').css('display', 'block');
+        });
+//        $(".cns_bg").click(function () {
+//            $('.cns').css('display', 'none');
+//            $('.cns_bg').css('display', 'none');
+//        });
+        $(".cns-btn").click(function () {
+            if (cns_type == 0) {
+                $('.cns').css('display', 'none');
+                $('.cns_bg').css('display', 'none');
+                console.log(111);
+//            $("#read").attr("checked",'checked');
+                $("#read").prop("checked", true)
+            } else if (cns_type == 1) {
+                $.ajax({
+                    type: "POST", //提交方式
+                    url: "https://ludianvr.com/test/user/visitor",//路径
+                    data: {
+                        openid: openid
+                    },//数据，这里使用的是Json格式进行传输
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status.state == 10000) {
+                            window.location.href = "erweima.html?type=0&openid=" + openid;
+                        }
+                    }
+                });
+            }
+        });
+        $(".ijt-view").click(function () {
+            $('.select_div').css('display', 'block');
+            $('.select_bg').css('display', 'block');
+        });
+        $(".select_bg").click(function () {
+            $('.select_div').css('display', 'none');
+            $('.select_bg').css('display', 'none');
+        });
+        $("#close_xcdd").click(function () {
+            $('.select_div').css('display', 'none');
+            $('.select_bg').css('display', 'none');
+        });
+        // 省市区
+        $("#sheng").change(function () {
+            console.log($("#sheng").find("option:selected").text());
+            var select_province = $("#sheng").find("option:selected").text();
+            sheng = select_province;
+            $("#shi").html('');
+            var option_str_shi = "<option value='市' selected='selected'>市</option>";
+            $("#shi").append(option_str_shi);
+
+            $("#qu").html('');
+            var option_str_qu = "<option value='区' selected='selected'>区</option>";
+            $("#qu").append(option_str_qu);
+
+            $("#jie").html('');
+            var option_str_jie = "<option value='街道' selected='selected'>街道</option>";
+            $("#jie").append(option_str_jie);
+
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/address/city",//路径
+                data: {
+                    province: select_province
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                    if (res.status.state == 20002) {
+                        $("#shi_div").css('display', 'block');
+                        zhixian = false;
+                        $("#shi").html('');
+                        var option_str = "<option value='市' selected='selected'>市</option>";
+                        for (var i = 0; i < res.content.city.length; i++) {
+                            option_str += '<option value=' + res.content.city[i] + '>' + res.content.city[i] + '</option>';
+                        }
+                        $("#shi").append(option_str);
+
+                    } else if (res.status.state == 20011) {
+                        $("#shi_div").css('display', 'none');
+                        zhixian = true;
+                        $.ajax({
+                            type: "POST", //提交方式
+                            url: "https://ludianvr.com/address/district",//路径
+                            data: {
+                                province: select_province
+                            },//数据，这里使用的是Json格式进行传输
+                            dataType: 'json',
+                            success: function (res) {//返回数据根据结果进行相应的处理
+                                if (res.status.state == 20002) {
+                                    $("#qu").html('');
+                                    var option_str = "<option value='区' selected='selected'>区</option>";
+                                    for (var i = 0; i < res.content.district.length; i++) {
+                                        option_str += '<option value=' + res.content.district[i] + '>' + res.content.district[i] + '</option>';
+                                    }
+                                    $("#qu").append(option_str);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $("#shi").change(function () {
+            console.log($("#shi").find("option:selected").text());
+            shi = $("#shi").find("option:selected").text();
+
+            $("#qu").html('');
+            var option_str_qu = "<option value='区' selected='selected'>区</option>";
+            $("#qu").append(option_str_qu);
+
+            $("#jie").html('');
+            var option_str_jie = "<option value='街道' selected='selected'>街道</option>";
+            $("#jie").append(option_str_jie);
+
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/address/district",//路径
+                data: {
+                    province: sheng,
+                    city: shi
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    if (res.status.state == 20002) {
+                        $("#qu").html('');
+                        var option_str = "<option value='区' selected='selected'>区</option>";
+                        for (var i = 0; i < res.content.district.length; i++) {
+                            option_str += '<option value=' + res.content.district[i] + '>' + res.content.district[i] + '</option>';
+                        }
+                        $("#qu").append(option_str);
+                    }
+                }
+            });
+        });
+
+        $("#qu").change(function () {
+            console.log($("#qu").find("option:selected").text());
+            qu = $("#qu").find("option:selected").text();
+
+            $("#jie").html('');
+            var option_str_jie = "<option value='街道' selected='selected'>街道</option>";
+            $("#jie").append(option_str_jie);
+            console.log(zhixian);
+            if (zhixian) {
+                $.ajax({
+                    type: "POST", //提交方式
+                    url: "https://ludianvr.com/address/street",//路径
+                    data: {
+                        province: sheng,
+                        district: qu
+                    },//数据，这里使用的是Json格式进行传输
+                    dataType: 'json',
+                    success: function (res) {//返回数据根据结果进行相应的处理
+                        if (res.status.state == 20003) {
+                            $("#jie").html('');
+                            var option_str = "<option value='街道' selected='selected'>街道</option>";
+                            for (var i = 0; i < res.content.street.length; i++) {
+                                option_str += '<option value=' + res.content.street[i] + '>' + res.content.street[i] + '</option>';
+                            }
+                            $("#jie").append(option_str);
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: "POST", //提交方式
+                    url: "https://ludianvr.com/address/street",//路径
+                    data: {
+                        province: sheng,
+                        city: shi,
+                        district: qu
+                    },//数据，这里使用的是Json格式进行传输
+                    dataType: 'json',
+                    success: function (res) {//返回数据根据结果进行相应的处理
+                        if (res.status.state == 20003) {
+                            $("#jie").html('');
+                            var option_str = "<option value='街道' selected='selected'>街道</option>";
+                            for (var i = 0; i < res.content.street.length; i++) {
+                                option_str += '<option value=' + res.content.street[i] + '>' + res.content.street[i] + '</option>';
+                            }
+                            $("#jie").append(option_str);
+                        }
+                    }
+                });
+            }
+
+        });
+        $("#sure_xcdd").click(function () {
+            sheng = $("#sheng").find("option:selected").text();
+            shi = $("#shi").find("option:selected").text();
+            qu = $("#qu").find("option:selected").text();
+            jie = $("#jie").find("option:selected").text();
+
+            if (zhixian) {
+                if (sheng == "省" || qu == "区" || jie == "街道") {
+                    alert('省市区街道信息不完整');
+                    return 0;
+                }
+            } else {
+                if (sheng == "省" || shi == "市" || qu == "区" || jie == "街道") {
+                    alert('省市区街道信息不完整');
+                    return 0;
+                }
+            }
+
+            if (zhixian) {
+                shi = "";
+                address = sheng + shi + qu + jie;
+            } else {
+                address = sheng + shi + qu + jie;
+            }
+
+            console.log(address);
+            $("#address").val(address);
+            $('.select_div').css('display', 'none');
+            $('.select_bg').css('display', 'none');
+        });
+
+        $(".xb-div").click(function () {
+
+            if ($(this).text() == '女士') {
+                sex = 0;
+                $('#nv').css({'border': '1px solid #d73c37', 'color': '#d73c37'});
+                $('#nan').css({'border': '1px solid #bebebe', 'color': '#bebebe'});
+            } else if ($(this).text() == '先生') {
+                sex = 1;
+                $('#nan').css({'border': '1px solid #d73c37', 'color': '#d73c37'});
+                $('#nv').css({'border': '1px solid #bebebe', 'color': '#bebebe'});
+            }
+        });
+        // 注册
+        $(".btn").click(function () {
+            console.log($("#date").val());
+            if ($('#name').val() == "") {
+//                alert("名字必须为中文！");
+                $("#name_ts").css('display', 'block');
+                return 0;
+            } else {
+                $("#name_ts").css('display', 'none');
+            }
+            if ($('#mobile').val() == "") {
+                $("#shurushouji").css('display', 'block');
+                $("#shoujigeshi").css('display', 'none');
+                return 0;
+            } else {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'none');
+            }
+            if (!isPoneAvailable($('#mobile').val())) {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'block');
+                return 0;
+            } else {
+                $("#shurushouji").css('display', 'none');
+                $("#shoujigeshi").css('display', 'none');
+            }
+            if ($('#mail').val() != "") {
+                if (!checkEmail($('#mail').val())) {
+                    $("#yx_cw").css('display', 'block');
+                    return 0;
+                } else {
+                    $("#yx_cw").css('display', 'none');
+                }
+            } else {
+                $("#yx_cw").css('display', 'none');
+            }
+            if ($('#yzm').val() == "") {
+                $("#yzm_sr").css('display', 'block');
+                return 0;
+            } else {
+                $("#yzm_sr").css('display', 'none');
+            }
+            if (!$('#read').is(':checked')) {
+                alert("请阅读并同意安全承诺书！");
+                return 0;
+            }
+
+            yangzheng($('#mobile').val(), $('#yzm').val());
+        });
+
+        $("#date").on("input", function () {
+            if ($(this).val().length > 0) {
+                $(this).addClass("full");
+            }
+            else {
+                $(this).removeClass("full");
+            }
+        });
+        // 判断用户是不是新用户
+//        registUser();
+//        getSms();
+//        yangzheng();
+//        registUser();
+        getProvince();
+        anquan();
+
+        function anquan() {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/user/commitment",//路径
+                data: {},//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                    if (res.status.state == 17001) {
+                        $('.cns-text').append(res.content.commitment);
+                    }
+                }
+            });
+        }
+
+        function getProvince() {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/address/province",//路径
+                data: {},//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                    if (res.status.state == 20001) {
+                        var option_str = "";
+                        for (var i = 0; i < res.content.province.length; i++) {
+                            option_str += '<option value=' + res.content.province[i] + '>' + res.content.province[i] + '</option>';
+                        }
+                        $("#sheng").append(option_str);
+                    }
+                }
+            });
+        }
+
+        function yangzheng(phonenumber, verifycode) {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/user/verifysms",//路径
+                data: {
+                    "openid": openid,
+                    "phonenumber": phonenumber,
+                    "verifycode": verifycode
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                    if (res.status.state == 13002) {
+                        registUser();
+                    } else {
+                        $("#yzm_cw").css('display', 'block');
+                    }
+                }
+            });
+        }
+
+
+        function registUser() {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/user/regist",//路径
+                data: {
+                    "openid": openid,
+                    "wechat_nickname": wechat_nickname,
+                    "wechat_sex": wechat_sex,
+                    "wechat_province": wechat_province,
+                    "wechat_city": wechat_city,
+                    "wechat_country": wechat_country,
+                    "wechat_headimgurl": wechat_headimgurl,
+                    "name": $('#name').val(),
+                    "sex": sex,
+                    "birthday": $("#date").val(),
+                    "phonenumber": $('#mobile').val(),
+                    "email": $('#mail').val(),
+                    "province": sheng,
+                    "city": shi,
+                    "district": qu,
+                    "street": jie
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+                    if (res.status.state == 11001) {
+                        window.location.href = "erweima.html?type=0&openid=" + openid;
+                    } else {
+                        alert("注册失败，请稍后再试");
+                    }
+                }
+            });
+        }
+    });
+
+    function checkName(inputname) {
+        if (inputname.length != 0) {
+            if (inputname.match(/^[\u4e00-\u9fa5]+$/)) return true;
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    function isPoneAvailable(str) {
+        var myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+        if (!myreg.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function checkEmail(myemail) {
+        var myReg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+        if (myReg.test(myemail)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+</script>
+<script>
+    window.shareManage.init({
+        title: "露电VR消防安全教育体验邀请函",
+        desc: "您的好友邀请您一起借助VR技术学习防火知识、灭火方式、逃生方法。体验一次  平安一生！",
+        imgUrl: 'https://www.ludianvr.com/ldvr/h5/ldvr/images/share_img.png',
+        link: 'https://www.ludianvr.com/ldvr/h5/ldvr/weixin.html'
+    });
+</script>
+<script>
+    var _mtac = {};
+    (function () {
+        var mta = document.createElement("script");
+        mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500610562");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+
+</body>
+</html>

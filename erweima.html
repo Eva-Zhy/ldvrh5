@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=87345"/>
+    <title></title>
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script src="https://www.ludianvr.com/ldvr/h5/js/wxShare.js?v=3333"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.min.js"></script>
+</head>
+<body>
+
+<div class="zs_share">
+
+</div>
+<img src="images/fx_img.png" class="share_img"/>
+
+<div class="sys">
+    <img class="sys-img" src="images/saomiao.png">
+    <div class="erweima">
+        扫描头盔上方二维码，获取验证码，即可体验超级逼真的虚拟现实场景，还等什么，赶快扫码体验！
+    </div>
+    <div id="sys_btn" class="btn2">
+        立即体验
+    </div>
+</div>
+
+<div class="xiangqing-div">
+    <div id="main"></div>
+    <div class="cj-title">
+        已体验场景
+    </div>
+
+    <a id="ad_url2" href="">
+        <img id="ad2" style="position: absolute; width: 40rem;  top: 21rem;" src="images/bai.jpg"/>
+    </a>
+
+    <div id="xq-yty" style="display: block;" class="xq-cj-div">
+        <!--<div class="xq-cj-info">-->
+        <!--<div class="info-title">-->
+        <!--防火知识-->
+        <!--</div>-->
+        <!--<div class="info-fen">-->
+        <!--目前最高分数90分-->
+        <!--</div>-->
+        <!--<div class="info-time">-->
+        <!--最后体验时间2019-06-04-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div id="xq-wty" style="display: none;" class="xq-cj-div">
+        <!--<div class="wty-div">-->
+        <!--<div class="wty-name">-->
+        <!--防火知识防火知识防火知识防火知识防火知识-->
+        <!--</div>-->
+        <!--<div class="goty">-->
+        <!--立即体验>>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+
+    <div class="fanhui" id="fanhui">
+        返回
+    </div>
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        series: [
+            {
+                name: '场景体验',
+                type: 'pie',
+//                selectedMode: 'single',
+                selectedOffset: 30,
+                radius: ['30%', '75%'],
+                clockwise: true,
+                label: {
+                    normal: {
+                        textStyle: {
+                            fontSize: 15
+                        }
+                    }
+                },
+                data: [
+//                    {value: 10, name: '已经体验10个'},
+//                    {value: 20, name: '未体验0个'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    //    setTimeout(function () {
+    //        console.log(option);
+    //        option.series[0].data[0].name = '已经体验1个';
+    //        option.series[0].data[0].value = 1;
+    //        myChart.setOption(option);
+    //    }, 2000);
+
+    // 使用刚指定的配置项和数据显示图表。
+    //    myChart.setOption(option);
+    //    myChart.on('click', function (params) {
+    //        console.log(params);
+    //    });
+
+
+</script>
+<div class="yzm">
+    <div class="yzm-div">
+        <div class="xiao1">
+            请在1个小时内体验
+        </div>
+        <div class="time">
+            00:00:00
+        </div>
+        <div style="left: 3.7rem;" class="yzm1"></div>
+        <div style="left: 12.5rem;" class="yzm2"></div>
+        <div class="yzm3"></div>
+        <div class="yzm4"></div>
+    </div>
+
+    <a id="ad_url" href="">
+        <img id="ad" style="position: absolute; width: 34rem; left: 3rem; top: 17rem;" src="images/bai.jpg"/>
+    </a>
+
+    <div class="tiyan">
+        体验场景
+    </div>
+
+    <div class="youke_tishi">
+        当前为快速体验模式，只能体验一个场景，想要解锁全部场景，现在就去注册吧！
+    </div>
+
+    <div class="youke_tiyan_div">
+        <!--<div class="youke-cj-div">-->
+            <!--<div class="youke-cj-title">防火知识</div>-->
+            <!--<div class="tiyan_font">已体验</div>-->
+        <!--</div>-->
+        <!--<div class="youke-cj-div">-->
+            <!--<div class="youke-cj-title2">防火知识</div>-->
+            <!--<div class="tiyan_img">-->
+                <!--<img class="img100" src="images/suo.png">-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+
+</div>
+<!--<div class="xiangqing">-->
+<!--查看详情 >-->
+<!--</div>-->
+
+<div class="cj-div">
+
+</div>
+<div class="gxn_div">
+    <img class="zan" src="images/praise.png">
+    <div class="gxn-txt">恭喜你！</div>
+    <div class="gxn-txt2">完成家庭消防体验</div>
+</div>
+<!--<div class="yiqi1">-->
+<!--第一期家庭消防体验-->
+<!--</div>-->
+<!--<div class="geshu1">-->
+<!--共<span style="color: #e15855">9</span>个-->
+<!--</div>-->
+
+<!--<div class="yiqi2">-->
+<!--第二期工厂消防体验-->
+<!--</div>-->
+<!--<div class="geshu2">-->
+<!--共<span style="color: #e15855">9</span>个-->
+<!--</div>-->
+
+<!--<div class="yiqi3">-->
+<!--第三期商场消防体验-->
+<!--</div>-->
+<!--<div class="geshu3">-->
+<!--共<span style="color: #e15855">9</span>个-->
+<!--</div>-->
+<!--<div class="yiqi4">-->
+<!--更多精彩体验，敬请期待......-->
+<!--</div>-->
+
+<div class="btn2" id="huoqi" style="display: none;">
+    返回扫描页面
+</div>
+
+<div class="fanhuishang" id="fanhuishang">
+    重新获取
+</div>
+
+<div class="btn2" style="bottom: 1.5rem;" id="fenxiang">
+    分享好友
+</div>
+
+<div class="btn2" style="bottom: 1.5rem;" id="zhuche">
+    马上注册
+</div>
+
+<div class="btn4">
+    领取证书
+</div>
+<!--<div class="btn4">-->
+<!--返回查看成绩-->
+<!--</div>-->
+</div>
+<div class="gxn">
+    <img class="zan" src="images/praise.png">
+    <div class="gxn-txt">恭喜你！</div>
+    <div class="gxn-txt2">完成家庭消防体验</div>
+    <div class="yiqi1">
+        第一期家庭消防体验
+    </div>
+    <div class="geshu1">
+        共<span style="color: #e15855">9</span>个
+    </div>
+
+    <div class="yiqi2">
+        第二期工厂消防体验
+    </div>
+    <div class="geshu2">
+        共<span style="color: #e15855">9</span>个
+    </div>
+
+    <div class="yiqi3">
+        第三期商场消防体验
+    </div>
+    <div class="geshu3">
+        共<span style="color: #e15855">9</span>个
+    </div>
+
+    <div class="btn3">
+        返回扫描页面
+    </div>
+
+    <div class="btn4">
+        领取证书
+    </div>
+</div>
+<script>
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    var projects = [];
+    var projects2 = [];
+    var click_projects_name = '';
+    var wancheng = 0;
+    var Request = new Object();
+    Request = GetRequest();
+    // 0 ：老用户 验证码失效 1：新用户
+    // 2 ：老用户 验证码还有效 authcode/time
+    // 3 : 游客用户
+    var type = Request['type'];
+    var time = Request['time'];
+    var authcode = Request['authcode'];
+    var openid = Request['openid'];
+    console.log('type', type);
+    console.log('time', time);
+    console.log('authcode', authcode);
+
+    //    $('.tiyan').css('display', 'block');
+    function detail(my_project_name) {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/test/user/experience/detail",//路径
+            data: {
+                openid: openid,
+                project_name: my_project_name
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                if (res.status.state == 16101) {
+                    var html_str = '';
+                    var html_str2 = '';
+                    option.series[0].data = [];
+                    $('#xq-yty').html('');
+                    $('#xq-wty').html('');
+                    if (res.content.experienced.length != 0) {
+                        for (var i = 0; i < res.content.experienced.length; i++) {
+                            html_str += '<div class="xq-cj-info">'
+                                + '<div class="info-title">'
+                                + res.content.experienced[i].mission_name
+                                + '</div>'
+                                + '<div class="info-fen">'
+                                + '目前最高分数 <span style="color: #e64953; font-size: 1.5rem;">' + res.content.experienced[i].highest_score + '</span> 分'
+                                + '</div>'
+                                + '<div class="info-time">'
+                                + '最后体验时间' + res.content.experienced[i].latest_time
+                                + '</div>'
+                                + '</div>'
+                        }
+                        var pid_data1 = {
+                            value: res.content.experienced.length,
+                            name: '已经体验' + res.content.experienced.length + '个',
+//                            selected:true,
+                            itemStyle: {
+                                color: '#f6664a'
+                            }
+                        };
+                        option.series[0].data.push(pid_data1);
+                        $('#xq-yty').append(html_str);
+                    }
+                    if (res.content.unexperienced.length != 0) {
+                        for (var o = 0; o < res.content.unexperienced.length; o++) {
+                            html_str2 += '<div class="wty-div">'
+                                + '<div class="wty-name">'
+                                + res.content.unexperienced[o]
+                                + '</div>'
+                                + '<div class="goty">'
+                                + '立即体验>>'
+                                + '</div>'
+                                + '</div>'
+                        }
+                        var pid_data2 = {
+                            value: res.content.unexperienced.length,
+                            name: '尚未体验' + res.content.unexperienced.length + '个',
+                            itemStyle: {
+                                color: '#0093e9'
+                            }
+                        };
+                        option.series[0].data.push(pid_data2);
+                        $('#xq-wty').append(html_str2);
+
+                        $('.goty').click(function () {
+                            $('.xiangqing-div').css('display', 'none');
+                            $('title').html('获取验证码');
+                        });
+                    }
+
+                    if (res.content.experienced.length == 0) {
+                        $('.cj-title').html('未体验场景');
+                        $('#xq-yty').css('display', 'none');
+                        $('#xq-wty').css('display', 'block');
+                    }
+
+                    myChart.setOption(option);
+                    myChart.on('click', function (params) {
+                        if (params.data.name.search("已经") != -1) {
+                            $('.cj-title').html('已体验场景');
+                            $('#xq-yty').css('display', 'block');
+                            $('#xq-wty').css('display', 'none');
+                        } else if (params.data.name.search("尚未") != -1) {
+                            $('.cj-title').html('未体验场景');
+                            $('#xq-yty').css('display', 'none');
+                            $('#xq-wty').css('display', 'block');
+                        }
+                    });
+                    $('.fanhui').click(function () {
+                        $('.xiangqing-div').css('display', 'none');
+                        $('title').html('获取验证码');
+                    });
+                }
+            }
+        });
+    }
+
+    function ajaxExperience() {
+        console.log('ajaxExperience');
+        var experience_time = setInterval(function () {
+            $.ajax({
+                type: "POST", //提交方式
+                url: "https://ludianvr.com/test/user/experience",//路径
+                data: {
+                    "openid": openid
+                },//数据，这里使用的是Json格式进行传输
+                dataType: 'json',
+                success: function (res) {//返回数据根据结果进行相应的处理
+                    console.log(res);
+//                    alert(JSON.stringify(res));
+                    if (res.status.state == 16001) {
+                        if (res.content.user_type == 1) {
+                            projects = res.content.history;
+                            $('.cj-div').html("");
+                            var html_test = "";
+                            var top_rem2 = "";
+                            for (var i = 0; i < projects.length; i++) {
+                                var top_rem = 33 + 3 * i + "rem";
+                                html_test += "<div  class='yiqi1' style=" + "'" + 'top: ' + top_rem + ";" + "'" + " > " + projects[i].project_name + "</div> <div id='cj_id" + i + "' style=" + "'" + 'top: ' + top_rem + ";" + "'" + " class='geshu1'> 共<span style='color: #e15855; font-size: 2rem;'><u>" + projects[i].times + "</u></span>个 </div>";
+                                var top_rem2 = 33 + 3 * (i + 1) + "rem";
+                            }
+
+                            html_test += "<div class='yiqi1' style=" + "'" + 'top: ' + top_rem2 + ";" + "'" + " >更多精彩体验，敬请期待......</div>";
+                            $('.cj-div').append(html_test);
+
+                            // 绑定事件
+                            for (var m = 0; m < projects.length; m++) {
+                                (function (m) {
+                                    $('#cj_id' + m).click(function () {
+                                        console.log(projects[m].project_name);
+                                        click_projects_name = projects[m].project_name;
+                                        $('title').html(projects[m].project_name);
+                                        detail(click_projects_name);
+                                        $('.xiangqing-div').css('display', 'block');
+                                    });
+                                })(m);
+                            }
+                            $('.tiyan').css('display', 'block');
+                            // btn
+                            $('#fenxiang').css('display', 'block');
+                            $('#fanhuishang').css('display', 'block');
+
+                        } else if (res.content.user_type == 0) {
+                            // btn
+                            $('#zhuche').css('display', 'block');
+                            $('.youke_tishi').css('display', 'block');
+                            $('.youke_tiyan_div').css('display', 'block');
+
+                            $('.youke_tiyan_div').html("");
+                            var html_test2 = "";
+                            html_test2 += "<div class='youke_tiyan_title'>体验场景</div>";
+                            projects2 = res.content.history;
+                            for (var e = 0; e < projects2.length; e++) {
+                                if (projects2[e].times == 0) {
+                                    html_test2 +=  "<div class='youke-cj-div'>"
+                                        +"<div class='youke-cj-title'>"+projects2[e].project_name+"</div>"
+                                        +"<div class='tiyan_font'>未体验</div>"
+                                        +"</div>"
+                                } else if(projects2[e].times == 1) {
+                                    html_test2 +=  "<div class='youke-cj-div'>"
+                                        +"<div class='youke-cj-title'>"+projects2[e].project_name+"</div>"
+                                        +"<div class='tiyan_font'>已体验</div>"
+                                        +"</div>"
+                                } else if (projects2[e].times == -1) {
+                                    html_test2 +=  "<div class='youke-cj-div'>"
+                                        +"<div class='youke-cj-title2'>"+projects2[e].project_name+"</div>"
+                                        +"<div class='tiyan_img'>"
+                                        +"<img class='img100' src='images/suo.png'>"
+                                        +"</div>"
+                                        +"</div>"
+                                }
+                            }
+                            html_test2 +=  "<div class='youke-cj-div'>"
+                                +"<div class='youke-cj-title2'>更多场景待解锁.......</div>"
+                                +"</div>";
+                            $('.youke_tiyan_div').append(html_test2);
+
+                            $('#zhuche').click(function () {
+                                window.location.href = "weixin.html?isyouke=1";
+                            })
+                        }
+
+
+//                        $('.xiangqing').css('display', 'block');
+//                        $('.xiangqing').click(function () {
+//                        });
+
+                        if (res.content.finished_all == 1) {
+                            clearTimeout(experience_time);
+                            $('.gxn_div').css('display', 'block');
+                            $('.yzm-div').css('display', 'none');
+                            $('.btn4').css('display', 'block');
+                            $('#fenxiang').css('display', 'none');
+                            $('#huoqi').css('display', 'block');
+                            $('#ad_url').css('display', 'none');
+                            $('#ad').css('display', 'none');
+                            $('#fanhuishang').css('display', 'none');
+                            // youke_btn
+                            $('#zhuche').css('display', 'none');
+                            $('.youke_tishi').css('display', 'none');
+                            $('.youke_tiyan_div').css('display', 'none');
+                            wancheng = 1;
+
+                            window.shareManage.init({
+                                title: "露电VR消防安全教育体验邀请函",
+                                desc: "您的好友邀请您一起借助VR技术学习防火知识、灭火方式、逃生方法。体验一次  平安一生！",
+                                imgUrl: 'https://www.ludianvr.com/ldvr/h5/ldvr/images/share_img.png',
+                                link: 'https://www.ludianvr.com/ldvr/h5/ldvr/share.html?openid=' + openid,
+                                success: function () {
+                                    $('.zs_share').css('display', 'none');
+                                    $('.share_img').css('display', 'none');
+                                }
+                            });
+                        }
+                    } else if (res.status.state == 16015) {
+//                        clearTimeout(experience_time);
+//                        $('.gxn_div').css('display','block');
+//                        $('.yzm-div').css('display','none');
+                    }
+                }
+            });
+        }, 5000);
+    }
+
+    if (type == 0 || type == 1) {
+        $(".sys").css('display', 'block');
+        $('title').html('扫一扫');
+    } else if (type == 2) {
+        $(".yzm").css('display', 'block');
+        $('title').html('获取验证码');
+        var authcode_array = [];
+        authcode_array = authcode.split("");
+        if (authcode_array.length > 0) {
+            $('.yzm1').text(authcode_array[0]);
+            $('.yzm2').text(authcode_array[1]);
+            $('.yzm3').text(authcode_array[2]);
+            $('.yzm4').text(authcode_array[3]);
+        }
+        ajaxExperience();
+        advertisement();
+        countdown(time);
+    }
+
+    function advertisement() {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/test/user/advertisement",//路径
+            data: {
+                position: 1
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 21001) {
+                    $('#ad').css('display', 'block');
+                    $('#ad').attr('src', res.content.advertisements[0].path);
+                    $('#ad_url').attr('href', res.content.advertisements[0].url);
+                }
+            }
+        });
+    }
+    advertisement2();
+    function advertisement2() {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/test/user/advertisement",//路径
+            data: {
+                position: 2
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 21001) {
+                    $('#ad2').css('display', 'block');
+                    $('#ad2').attr('src', res.content.advertisements[0].path);
+                    $('#ad_url2').attr('href', res.content.advertisements[0].url);
+                }
+            }
+        });
+    }
+
+    function scan(openid, uuid) {
+        $.ajax({
+            type: "POST", //提交方式
+            url: "https://ludianvr.com/test/user/scan",//路径
+            data: {
+                "openid": openid,
+                "uuid": uuid
+            },//数据，这里使用的是Json格式进行传输
+            dataType: 'json',
+            success: function (res) {//返回数据根据结果进行相应的处理
+                console.log(res);
+                if (res.status.state == 12001) {
+                    var authcode = res.content.authcode;
+                    var time = res.content.timeleft;
+                    $(".yzm").css('display', 'block');
+                    $('title').html('获取验证码');
+                    $(".sys").css('display', 'none');
+                    var authcode_array = [];
+                    authcode_array = authcode.split("");
+                    if (authcode_array.length > 0) {
+                        $('.yzm1').text(authcode_array[0]);
+                        $('.yzm2').text(authcode_array[1]);
+                        $('.yzm3').text(authcode_array[2]);
+                        $('.yzm4').text(authcode_array[3]);
+                    }
+                    ajaxExperience();
+                    advertisement();
+                    countdown(time);
+                } else {
+                    alert('扫码失败，请稍后再试!')
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#sys_btn").click(function () {
+            window.wx.scanQRCode({
+                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    scan(openid, result);
+                }
+            });
+        });
+
+        $('.btn4').click(function () {
+            window.location.href = "zhengshu.html?openid=" + openid;
+        });
+        $('#huoqi').click(function () {
+            if (wancheng == 1) {
+                window.location.href = "erweima.html?type=1&openid=" + openid;
+            }
+        });
+
+        $('#fanhuishang').click(function () {
+            window.location.href = "erweima.html?type=1&openid=" + openid;
+        });
+
+        $('#fenxiang').click(function () {
+            $('.zs_share').css('display', 'block');
+            $('.share_img').css('display', 'block');
+        });
+
+        $('.zs_share').click(function () {
+            $('.zs_share').css('display', 'none');
+            $('.share_img').css('display', 'none');
+        });
+    });
+
+    //单纯分钟和秒倒计时
+    function countdown(time) {
+        var time_arr = time.split(":");
+        if (time_arr.length > 0) {
+            var m = parseInt(time_arr[1]);
+            var s = parseInt(time_arr[2]);
+            var countdown_time = setInterval(function () {
+                if (s < 10) {
+                    //如果秒数少于10在前面加上0
+                    if (m < 10) {
+                        $('.time').html('00:' + '0' + m + ':0' + s);
+                    } else {
+                        $('.time').html('00:' + m + ':0' + s)
+                    }
+                } else {
+                    if (m < 10) {
+                        $('.time').html('00:' + '0' + m + ':' + s);
+                    } else {
+                        $('.time').html('00:' + m + ':' + s)
+                    }
+                }
+                s--;
+                if (s < 0) {
+                    //如果秒数少于0就变成59秒
+                    s = 59;
+                    m--;
+                }
+                if (m == 0 && s == 0) {
+                    clearInterval(countdown_time);
+                    setTimeout(function () {
+                        $('.time').html('00:00:00');
+                    }, 1000);
+                }
+            }, 1000)
+        }
+    }
+
+    // scan();
+
+    window.shareManage.init({
+        title: "露电VR消防安全教育体验邀请函",
+        desc: "您的好友邀请您一起借助VR技术学习防火知识、灭火方式、逃生方法。体验一次  平安一生！",
+        imgUrl: 'https://www.ludianvr.com/ldvr/h5/ldvr/images/share_img.png',
+        link: 'https://www.ludianvr.com/ldvr/h5/ldvr/weixin.html',
+        success: function () {
+            $('.zs_share').css('display', 'none');
+            $('.share_img').css('display', 'none');
+        }
+    });
+</script>
+<script>
+    var _mtac = {};
+    (function () {
+        var mta = document.createElement("script");
+        mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500610562");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+</body>
+</html>
