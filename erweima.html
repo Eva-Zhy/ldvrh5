@@ -288,7 +288,7 @@
     function detail(my_project_name) {
         $.ajax({
             type: "POST", //提交方式
-            url: "https://ludianvr.com/test/user/experience/detail",//路径
+            url: "https://ludianvr.com/user/experience/detail",//路径
             data: {
                 openid: openid,
                 project_name: my_project_name
@@ -385,7 +385,7 @@
         var experience_time = setInterval(function () {
             $.ajax({
                 type: "POST", //提交方式
-                url: "https://ludianvr.com/test/user/experience",//路径
+                url: "https://ludianvr.com/user/experience",//路径
                 data: {
                     "openid": openid
                 },//数据，这里使用的是Json格式进行传输
@@ -529,7 +529,7 @@
     function advertisement() {
         $.ajax({
             type: "POST", //提交方式
-            url: "https://ludianvr.com/test/user/advertisement",//路径
+            url: "https://ludianvr.com/user/advertisement",//路径
             data: {
                 position: 1
             },//数据，这里使用的是Json格式进行传输
@@ -548,7 +548,7 @@
     function advertisement2() {
         $.ajax({
             type: "POST", //提交方式
-            url: "https://ludianvr.com/test/user/advertisement",//路径
+            url: "https://ludianvr.com/user/advertisement",//路径
             data: {
                 position: 2
             },//数据，这里使用的是Json格式进行传输
@@ -567,7 +567,7 @@
     function scan(openid, uuid) {
         $.ajax({
             type: "POST", //提交方式
-            url: "https://ludianvr.com/test/user/scan",//路径
+            url: "https://ludianvr.com/user/scan",//路径
             data: {
                 "openid": openid,
                 "uuid": uuid

@@ -42,7 +42,7 @@
         function newUser() {
             $.ajax({
                 type: "POST", //提交方式
-                url: "https://ludianvr.com/test/user/login",//路径
+                url: "https://ludianvr.com/user/login",//路径
                 data: {
                     "openid": openid
                 },//数据，这里使用的是Json格式进行传输
@@ -419,7 +419,7 @@
             } else if (cns_type == 1) {
                 $.ajax({
                     type: "POST", //提交方式
-                    url: "https://ludianvr.com/test/user/visitor",//路径
+                    url: "https://ludianvr.com/user/visitor",//路径
                     data: {
                         openid: openid
                     },//数据，这里使用的是Json格式进行传输
